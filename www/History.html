@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="components/loader.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/History.css">
+    <script>
+      //アプケーションキーとクライアントキーの設定
+      var AppKey="4f463efb9c69e9faf48862aca3d5f9af3a031b1ac8ec0ac7e6980a730c59bab6";
+      var ClientKey="8cc5301e73aa4464ce567797917f39fed44852456b4ec6eaa24fd42c98937f59";
+      //ncmbインスタンス化
+      var ncmb = new NCMB(AppKey,ClientKey);
+      var currentUser = ncmb.User.getCurrentUser();
+      var user = currentUser.get("userName")
+
+      //DBから習得
+      var messageclass = ncmb.DataStore("MessageClass");
+      messageclass.equalTo("userName",user).fetchAll()
+      .then(function(results){
+        //リスト作成
+        for (var i = 0; i < results.length; i++) {
+          var object = results[i];
+          var item = document.createElement('ons-list-item');
+          var link = document.createElement('a');
+          link.setAttribute('href','./Memory.html?objectId='+object.get("objectId"));
+          link.textContent = object.get("title")
+          item.appendChild(link);
+          document.getElementById("onslist").appendChild(item);
+        }
+      })
+      .catch(function(err){
+        console.log(err);
+      });
+    //戻る
+    function Back(){
+      location.href = "Main.html";
+    }
+    </script>
+    
+</head>
+<body>
+  <ons-page>
+    <button class="LogoutBtn" onclick = "Back()">
+      戻る
+    </button>
+      <div id="header">思い出</div>
+      <ons-list id="onslist">
+      </ons-list>
+  </ons-page>
+  
+</body>
+</html>

@@ -1,0 +1,34 @@
+/**/
+body{
+  text-align: center;
+  position: relative;
+}
+
+p{
+ margin-top: 17%; 
+ padding: 5%;
+ font-size: 30px;
+}
+
+img{
+  width: 80%;
+  height: 50%;
+  margin-top: 2%;
+}
+
+.SendBtn,.StoryBtn{
+  background: skyblue;
+  margin-top: 20%;
+  width: 40%;
+  padding-top: 3%;
+  padding-bottom: 3%;
+}
+.SendBtn.StoryBtn{
+  margin-right: 5%;
+}
+.LogoutBtn{
+  position: absolute;
+  top: -10%;
+  left: 2%;
+  width:30%
+}

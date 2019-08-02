@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="components/loader.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" type="text/css" href="css/Register.css">
+
+  <script>
+    function Insert(){
+
+      //アプケーションキーとクライアントキーの設定
+      var AppKey="4f463efb9c69e9faf48862aca3d5f9af3a031b1ac8ec0ac7e6980a730c59bab6";
+      var ClientKey="8cc5301e73aa4464ce567797917f39fed44852456b4ec6eaa24fd42c98937f59";
+      //ncmbインスタンス化
+      var ncmb = new NCMB(AppKey,ClientKey);
+      //Userインスタンスの生成
+      var user = new ncmb.User();
+      
+      //値代入
+      var name = document.getElementById("UserId").value;
+      var email = document.getElementById("MailAddress").value;
+      var confmail = document.getElementById("ConfMail").value;
+      var password = document.getElementById("Password").value;
+      var confpass = document.getElementById("ConfPass").value;
+      var check = true
+      // ユーザー名・パスワードを設定
+      if(name != "" && email != "" && confmail != "" && password != "" && confpass != ""){
+        if(email != confmail){
+          check = false
+        }
+        if(password != confpass){
+         check = false
+        }
+        if(check){
+          
+          //名前、メールアドレス、パスワードの値をセット
+          user.set("userName",name).set("mailAddress",email).set("password",password);
+          // ユーザーの新規登録処理
+          user.signUpByAccount()
+          .then(function(){
+          //登録後処理
+          document.getElementById("toast").click();
+          location.href = "index.html";
+          }).catch(function(err){
+          //エラー処理
+          alert("ユーザ名または、メールアドレスが重複しています")
+          });
+        }else{
+          alert("入力箇所に誤りがあります")
+        }
+      }else{
+        alert("全ての情報を入力してください");
+      }
+    }
+    
+    function Back(){
+      location.href= "index.html";
+    }
+  </script>
+</head>
+<body>
+  <div class = "BackBtn">
+      <button onclick="Back()">戻る</button>
+  </div>
+  <div class = 'title'>新規登録</div>
+  <div class = "Input">
+    <input class="text-input text-input--material" id = "UserId"placeholder="ユーザID" type="text">
+    <input class="text-input text-input--material" id = "MailAddress" placeholder="メールアドレス" type="text">
+    <input class="text-input text-input--material" id = "ConfMail"placeholder="確認メールアドレス" type="text" required>
+    <input class="text-input text-input--material" id = "Password"placeholder="パスワード" type="password">
+    <input class="text-input text-input--material" id = "ConfPass"placeholder="確認パスワード" type="password">
+    <div class = "InsertBtn">
+      <button onclick = "Insert()">登録</button>
+    </div>
+  </div>
+    <ons-button id = "toast" onclick="ons.notification.toast('登録しました', { timeout: 1000, animation:'fall'})">
+  </ons-button>
+</body>
+</html>

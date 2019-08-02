@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="components/loader.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/Memory.css">
+
+  <script>
+
+    function Back(){
+      location.href = "History.html";
+    }
+
+    //クエリストリングから画像IDを取得
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) {
+                return pair[1];
+            }
+        }
+    }
+
+    //アプケーションキーとクライアントキーの設定
+    var AppKey="4f463efb9c69e9faf48862aca3d5f9af3a031b1ac8ec0ac7e6980a730c59bab6";
+    var ClientKey="8cc5301e73aa4464ce567797917f39fed44852456b4ec6eaa24fd42c98937f59";
+    //ncmbインスタンス化
+    var ncmb = new NCMB(AppKey,ClientKey);
+    var currentUser = ncmb.User.getCurrentUser();
+
+    //画像IDを取得
+    var objectID = getQueryVariable("objectId");
+
+    var MessageClass = ncmb.DataStore("MessageClass");
+    //画像とタイトルとメッセージを保存
+    MessageClass.equalTo("objectId",objectID).fetchAll()
+      .then(function(results){
+          object_ID = results[0].get("img");
+          object_title = results[0].get("title");
+          object_text = results[0].get("message");
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            var dataUrl = reader.result;
+            document.getElementById("image").src = dataUrl;
+          }
+          ncmb.File.download(object_ID,"blob")
+          .then(function(fileData){
+            // ファイル取得後処理     
+            reader.readAsDataURL(fileData);
+            document.getElementById("message").textContent = object_text
+            document.getElementById("title").textContent = object_title;
+          })
+          .catch(function(err){
+            // エラー処理
+          });
+      })
+      .catch(function(err){
+        console.log(err);
+      });
+  </script>
+</head>
+<body>
+  <button class="LogoutBtn" onclick = "Back()">
+      戻る
+  </button>
+  <div id="header">
+    <p id = "title"></p>
+  </div>
+  <div class = "Img">
+    <img src="" id="image"/>
+  </div>
+  <div class = "Msg">
+    <span id="message">
+    </span>
+  </div>
+</body>
+</html>

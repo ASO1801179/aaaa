@@ -1,0 +1,58 @@
+.title{
+position: absolute;
+width:80%;
+height: 20%;
+left: calc(50% - 80%/2);
+top: calc(50% - 20%/2 - 30%);
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 30px;
+line-height: 35px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #000000;
+
+}
+.title .text-input{
+  width: 100%;
+  font-size: 35px;
+  text-align: center;
+}
+.login{
+  position: absolute;
+  width: 80%;
+  height: 10%;
+  right:10%;
+  left:10%;
+  top: 40%;
+}
+.id{
+  width:100%;
+}
+.pass{
+  width:100%;
+}
+.text-input--material{
+  width:100%;
+}
+::placeholder{
+   text-align: center;
+}
+.RegisterBtn{
+  position: absolute;
+  width: 35%;
+  height: 6%;
+  left: 10%;
+  top: 60%;
+}
+.LoginBtn{
+  position: absolute;
+  width: 35%;
+  height: 6%;
+  right:10%;
+  top: 60%;
+}

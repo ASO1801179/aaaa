@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+      <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="components/loader.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/Send.css">
+    <script src="components/loader.js"></script>
+    <script>
+      
+      var AppKey="4f463efb9c69e9faf48862aca3d5f9af3a031b1ac8ec0ac7e6980a730c59bab6";
+      var ClientKey="8cc5301e73aa4464ce567797917f39fed44852456b4ec6eaa24fd42c98937f59";
+      //ncmbインスタンス化
+      var ncmb = new NCMB(AppKey,ClientKey);
+      var currentUser = ncmb.User.getCurrentUser();
+      //DB登録処理
+      function DBinsert(){
+        var result = true;
+        //検証
+        if(true){ 
+          var name = currentUser.get("userName");
+          var date = new Date();
+          var Year = date.getFullYear();
+          var Month = date.getMonth()+1;
+          var Week = date.getDay();
+          var Day = date.getDate();
+          var Hour = date.getHours();
+          var Minute = date.getMinutes();
+          var Second = date.getSeconds();
+          var fileName = name + Year + Month + Week + Day + Hour + Minute + Second;
+          var fileData = document.getElementById("file-data").files[0];
+          ncmb.File.upload(fileName, fileData)
+          .then(function(res){
+            
+          })
+          .catch(function(err){
+            result = false;
+          });
+          if(result){
+             var message = ncmb.DataStore("MessageClass");
+             var Message = new message();
+             Message.set("userName",currentUser.get("userName"))
+            .set("message", document.getElementById("message").value)
+            .set("img", fileName)
+            .set("title",document.getElementById("title").value)
+            .save()
+            .then(function(message){
+              alert("タイムカプセル送信に成功しました");
+              location.href = "Main.html";
+            })
+            .catch(function(err){
+              alert("タイムカプセル送信に失敗しました");
+            });
+          }else{
+            alert("タイムカプセル送信に失敗しました");
+          }
+        }else{
+          alert("過去には戻れません; ;");
+        }
+      }
+
+      //検証関数
+    </script>
+</head>
+<body>
+  <div class="TimeCapsule">
+    <div class = "message">
+    <input class="text-input text-input--material" placeholder="タイトル" type="text" required id="title">
+    <br>
+    <textarea class="textarea" rows="3" placeholder="メッセージ" id="message"></textarea>
+    </div>
+    <div class="send">
+      <input type="file" id="file-data"/><button class="button button--material" onClick = "DBinsert()">送信</button>
+    </div>
+    <div class="date">
+      <select class="select-input select-input--material" id = "year">
+        <option value = "2019">2019</option>
+        <option value = "2020">2020</option>
+        <option value = "2021">2021</option>
+        <option value = "2022">2022</option>
+        <option value = "2023">2023</option>
+        <option value = "2024">2024</option>
+        <option value = "2025">2025</option>
+        <option value = "2026">2026</option>
+        <option value = "2027">2027</option>
+        <option value = "2028">2028</option>
+        <option value = "2029">2029</option>
+        <option value = "2030">2030</option>
+      </select>
+      <select class="select-input select-input--material" id = "month">
+        <option value = "1">1</option>
+        <option value = "2">2</option>
+        <option value = "3">3</option>
+        <option value = "4">4</option>
+        <option value = "5">5</option>
+        <option value = "6">6</option>
+        <option value = "7">7</option>
+        <option value = "8">8</option>
+        <option value = "9">9</option>
+        <option value = "10">10</option>
+        <option value = "11">11</option>
+        <option value = "12">12</option>
+      </select>
+      <select class="select-input select-input--material" id = "day">
+        <option value = "1">1</option>
+        <option value = "2">2</option>
+        <option value = "3">3</option>
+        <option value = "4">4</option>
+        <option value = "5">5</option>
+        <option value = "6">6</option>
+        <option value = "7">7</option>
+        <option value = "8">8</option>
+        <option value = "9">9</option>
+        <option value = "10">10</option>
+        <option value = "11">11</option>
+        <option value = "12">12</option>
+        <option value = "13">13</option>
+        <option value = "14">14</option>
+        <option value = "15">15</option>
+        <option value = "16">16</option>
+        <option value = "17">17</option>
+        <option value = "18">18</option>
+        <option value = "19">19</option>
+        <option value = "20">20</option>
+        <option value = "21">21</option>
+        <option value = "22">22</option>
+        <option value = "23">23</option>
+        <option value = "24">24</option>
+        <option value = "25">25</option>
+        <option value = "26">26</option>
+        <option value = "27">27</option>
+        <option value = "28">28</option>
+        <option value = "29">29</option>
+        <option value = "30">30</option>
+        <option value = "31">31</option>
+      </select>
+      
+    </div>
+  </div>
+</body>
+</html>
